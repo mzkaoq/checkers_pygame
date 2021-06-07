@@ -44,6 +44,8 @@ class Game:
                 self.board.remove(skipped)
             self.change_turn()
         else:
+            if piece == 0:
+                print("zly ruch")
             return False
         return True
 
