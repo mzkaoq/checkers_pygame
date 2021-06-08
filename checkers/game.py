@@ -38,6 +38,8 @@ class Game:
             return False
         elif col == 0 or col == 1:
             self.restart_game()
+        else:
+            print("brak obszaru klikania")
 
     def restart_game(self):
         print("restart")
