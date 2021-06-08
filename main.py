@@ -1,9 +1,9 @@
 import pygame
-from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
+from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE, HEIGHT_BELT
 from checkers.game import Game
 
 FPS = 60
-WIN = pygame.display.set_mode((WIDTH,HEIGHT))
+WIN = pygame.display.set_mode((WIDTH,HEIGHT_BELT))
 pygame.display.set_caption("checkers")
 
 def get_row_col_from_mouse(pos):
@@ -32,6 +32,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
+                print(row,col)
                 game.select(row,col)
 
         game.update()
