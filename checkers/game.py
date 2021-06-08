@@ -54,7 +54,6 @@ class Game:
         else:
             if piece == 0:
                 print("zly ruch")
-            return False
         return True
 
     def change_turn(self):
