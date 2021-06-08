@@ -15,3 +15,5 @@ GREEN = (0, 150, 0)
 GOLD = (200,180,0)
 
 CROWN = pygame.transform.scale(pygame.image.load('checkers/crown.png'), (WIDTH // 20, HEIGHT // 38))
+
+
