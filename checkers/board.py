@@ -1,5 +1,5 @@
 import pygame
-from .constants import BLACK, WHITE, ROWS, COLS, RED, SQUARE_SIZE
+from .constants import BLACK, WHITE, ROWS, COLS, RED, SQUARE_SIZE, GREY
 from .piece import Piece, King
 
 
@@ -16,6 +16,9 @@ class Board:
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, RED, (row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
+    def draw_button(self, win):
+        pygame.draw.rect(win, GREY, (0 * SQUARE_SIZE + 5, 8 * SQUARE_SIZE + 5, 2 * SQUARE_SIZE - 10, SQUARE_SIZE - 10))
+
     def create_board2(self):
         for i in range(ROWS):
             if i < 3:
@@ -27,6 +30,7 @@ class Board:
 
     def draw(self, win):
         self.draw_squares(win)
+        self.draw_button(win)
         for row in range(ROWS):
             for col in range(COLS):
                 piece = self.board[row][col]
@@ -38,7 +42,7 @@ class Board:
         piece.move(row, col)
 
         if row == ROWS - 1 or row == 0:
-            self.board[piece.row][piece.col] = King(piece.row,piece.col,piece.color)
+            self.board[piece.row][piece.col] = King(piece.row, piece.col, piece.color)
             if piece.color == WHITE:
                 self.white_kings += 1
             else:
@@ -126,12 +130,12 @@ class Board:
             right += 1
         return moves
 
-    def remove(self,pieces):
+    def remove(self, pieces):
         for piece in pieces:
-            self.board[piece.row][piece.col]=0
+            self.board[piece.row][piece.col] = 0
             if piece != 0:
                 if piece.color == RED:
-                    self.red_left -=1
+                    self.red_left -= 1
                 else:
                     self.white_left -= 1
 
