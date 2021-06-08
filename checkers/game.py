@@ -35,6 +35,8 @@ class Game:
                 self.selected = piece
                 self.valid_moves = self.board.get_valid_moves(piece)
                 return True
+            elif piece != 0 and piece.color != self.turn:
+                print("zly kolor")
             return False
         elif col == 0 or col == 1:
             self.restart_game()
