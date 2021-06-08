@@ -41,7 +41,7 @@ class Piece(Pattern):
         self.king = False
 
 
-class King(Pattern):
+class King(Piece):
     def __init__(self, row, col, color):
         super().__init__(row, col, color)
         self.king = True
