@@ -2,14 +2,13 @@ import pygame
 from .constants import BLACK, WHITE, ROWS, COLS, RED, SQUARE_SIZE, GREY, GOLD, FONT
 from .piece import Piece, King
 
-
 class Board:
     def __init__(self, win):
         self.board = []
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.win = win
-        self.create_board_testa()
+        self.create_board2()
 
     def draw_squares(self, win):
         win.fill(BLACK)
@@ -36,7 +35,7 @@ class Board:
                 self.board.append([0 for x in range(COLS)])
 
     def create_board_testa(self):
-        self.red_left = 1
+        self.red_left = 4
         self.white_left = 4
         for i in range(ROWS):
             if i > 2 and i < 4:
