@@ -1,5 +1,5 @@
 import pygame
-from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE, HEIGHT_BELT
+from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE, HEIGHT_BELT,FONT
 from checkers.game import Game
 
 FPS = 60
@@ -23,8 +23,10 @@ def main():
         if game.winner() != None:
             if game.winner()==WHITE:
                 print("white has won")
+                break
             else:
                 print("red has won")
+                break
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
