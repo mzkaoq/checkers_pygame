@@ -1,5 +1,6 @@
 import pygame
-from .constants import RED, WHITE, SQUARE_SIZE, BLUE, FONT
+from .Exceptions import BadMoveExceptions, OutsideBoardExceptions
+from .constants import RED, WHITE, SQUARE_SIZE, BLUE, FONT2,FONT,GREY,BLACK
 from checkers.board import Board
 
 
@@ -10,14 +11,38 @@ class Game:
 
     def update(self):
         self.board.draw(self.win)
+        self.printing_moves()
         self.draw_valid_moves(self.valid_moves)
+        if self.bad_move_exce:
+            self.bad_move_exe()
+            pygame.time.delay(1000)
+        self.bad_move_exce = False
+        if self.outside_board_exce:
+            self.outside_board_exe()
+            pygame.time.delay(1000)
+        self.outside_board_exce = False
+        if self.winner() != None:
+            if self.winner() == WHITE:
+                pygame.draw.rect(self.win, GREY,
+                                 (1 * SQUARE_SIZE + SQUARE_SIZE // 2, 4 * SQUARE_SIZE, 5 * SQUARE_SIZE, SQUARE_SIZE + 5))
+                self.show_text("WHITE HAS WON", 4, 1.5,WHITE)
+            else:
+                pygame.draw.rect(self.win, GREY,
+                                 (1 * SQUARE_SIZE + SQUARE_SIZE//2, 4* SQUARE_SIZE, 5 * SQUARE_SIZE , SQUARE_SIZE +5))
+                self.show_text("RED HAS WON", 4, 2,WHITE)
         pygame.display.update()
+
+    def show_text(self, content, x, y,rgb):
+        text = FONT2.render(content, True, rgb)
+        self.win.blit(text, (y * SQUARE_SIZE + SQUARE_SIZE // 4 + 5, x * SQUARE_SIZE + SQUARE_SIZE // 4 + 5))
 
     def _init(self):
         self.selected = None
         self.board = Board(self.win)
         self.turn = RED
         self.valid_moves = {}
+        self.bad_move_exce = False
+        self.outside_board_exce = False
 
     def reset(self):
         self._init()
@@ -25,11 +50,14 @@ class Game:
     def select(self, row, col):
         if row != 8:
             if self.selected:
-                result = self._move(row, col)
-                if not result:
-                    self.selected = None
-                    self.select(row, col)
-
+                try:
+                    result = self._move(row, col)
+                    if not result:
+                        self.selected = None
+                        self.select(row, col)
+                except BadMoveExceptions:
+                    self.bad_move_exce = True
+                    print("bad move")
             piece = self.board.get_piece(row, col)
             if piece != 0 and piece.color == self.turn:
                 self.selected = piece
@@ -41,7 +69,19 @@ class Game:
         elif col == 0 or col == 1:
             self.restart_game()
         else:
-            print("brak obszaru klikania")
+            raise OutsideBoardExceptions()
+
+    def bad_move_exe(self):
+        pygame.draw.rect(self.win, GREY,
+                         (1 * SQUARE_SIZE + SQUARE_SIZE // 2, 4 * SQUARE_SIZE, 5 * SQUARE_SIZE,
+                          SQUARE_SIZE + 5))
+        self.show_text("BAD MOVE", 4, 1.5, BLACK)
+
+    def outside_board_exe(self):
+        pygame.draw.rect(self.win, GREY,
+                         (1 * SQUARE_SIZE + SQUARE_SIZE // 2, 4 * SQUARE_SIZE, 5 * SQUARE_SIZE,
+                          SQUARE_SIZE + 5))
+        self.show_text("Outside board", 4, 1.5, BLACK)
 
     def restart_game(self):
         print("restart")
@@ -57,7 +97,7 @@ class Game:
             self.change_turn()
         else:
             if piece == 0:
-                print("zly ruch")
+                raise BadMoveExceptions()
         return True
 
     def change_turn(self):
@@ -75,3 +115,9 @@ class Game:
 
     def winner(self):
         return self.board.winner()
+
+    def printing_moves(self):
+        if self.turn == RED:
+            self.show_text("RED's MOVE", 7.8, 2, BLACK)
+        else:
+            self.show_text("WHITE's MOVE", 7.8, 2, BLACK)

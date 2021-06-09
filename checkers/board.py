@@ -9,7 +9,7 @@ class Board:
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.win = win
-        self.create_board2(win)
+        self.create_board_testa()
 
     def draw_squares(self, win):
         win.fill(BLACK)
@@ -21,12 +21,12 @@ class Board:
         pygame.draw.rect(win, GOLD, (0, 8 * SQUARE_SIZE, 8 * SQUARE_SIZE, 8 * SQUARE_SIZE))
         pygame.draw.rect(win, GREY, (0 * SQUARE_SIZE + 5, 8 * SQUARE_SIZE + 5, 2 * SQUARE_SIZE - 10, SQUARE_SIZE - 10))
 
-    def show_text(self,win):
-        text = FONT.render("RESTART", True, (0, 0, 0))
-        win.blit(text, (0 * SQUARE_SIZE + SQUARE_SIZE//4+5, 8 * SQUARE_SIZE + SQUARE_SIZE//4+5))
+    def show_text(self, content, x, y):
+        text = FONT.render(content, True, (0, 0, 0))
+        self.win.blit(text, (y * SQUARE_SIZE + SQUARE_SIZE // 4 + 5, x * SQUARE_SIZE + SQUARE_SIZE // 4 + 5))
 
-    def create_board2(self,win):
-        self.show_text(win)
+    def create_board2(self):
+
         for i in range(ROWS):
             if i < 3:
                 self.board.append([Piece(i, x, WHITE) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
@@ -35,10 +35,21 @@ class Board:
             else:
                 self.board.append([0 for x in range(COLS)])
 
+    def create_board_testa(self):
+        self.red_left = 1
+        self.white_left = 4
+        for i in range(ROWS):
+            if i > 2 and i < 4:
+                self.board.append([Piece(i, x, WHITE) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
+            elif i > 3 and i < 5:
+                self.board.append([Piece(i, x, RED) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
+            else:
+                self.board.append([0 for x in range(COLS)])
+
     def draw(self, win):
         self.draw_squares(win)
         self.draw_button_and_back(win)
-        self.show_text(win)
+        self.show_text("RESTART", 8, 0)
         for row in range(ROWS):
             for col in range(COLS):
                 piece = self.board[row][col]

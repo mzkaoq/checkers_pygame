@@ -17,3 +17,4 @@ GOLD = (200, 180, 0)
 
 CROWN = pygame.transform.scale(pygame.image.load('checkers/crown.png'), (WIDTH // 20, HEIGHT // 38))
 FONT = pygame.font.Font('checkers/arial.ttf', 20)
+FONT2 = pygame.font.Font('checkers/arial.ttf', 40)
