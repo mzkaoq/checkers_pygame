@@ -1,6 +1,8 @@
 import pygame
 from .constants import BLACK, WHITE, ROWS, COLS, RED, SQUARE_SIZE, GREY, GOLD, FONT
+import checkers.game
 from .piece import Piece, King
+
 
 class Board:
     def __init__(self, win):
@@ -8,7 +10,7 @@ class Board:
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.win = win
-        self.create_board2()
+        self.create_board_test_g_f()
 
     def draw_squares(self, win):
         win.fill(BLACK)
@@ -30,17 +32,6 @@ class Board:
             if i < 3:
                 self.board.append([Piece(i, x, WHITE) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
             elif i > 4:
-                self.board.append([Piece(i, x, RED) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
-            else:
-                self.board.append([0 for x in range(COLS)])
-
-    def create_board_testa(self):
-        self.red_left = 4
-        self.white_left = 4
-        for i in range(ROWS):
-            if i > 2 and i < 4:
-                self.board.append([Piece(i, x, WHITE) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
-            elif i > 3 and i < 5:
                 self.board.append([Piece(i, x, RED) if x % 2 == (i + 1) % 2 else 0 for x in range(COLS)])
             else:
                 self.board.append([0 for x in range(COLS)])
@@ -163,3 +154,52 @@ class Board:
         elif self.white_left <= 0:
             return RED
         return None
+
+    def create_board_test_d(self):
+        self.red_left = 1
+        self.white_left = 3
+        self.board = [[0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, Piece(2, 3, WHITE), 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, Piece(4, 5, WHITE), 0, 0],
+                      [0, 0, 0, 0, 0, 0, Piece(5, 6, RED), 0],
+                      [0, Piece(6, 1, WHITE), 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      ]
+    def create_board_test_e(self):
+        self.red_left = 1
+        self.white_left = 1
+        self.board = [[0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, Piece(1, 2, RED), 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, Piece(6, 1, WHITE), 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      ]
+    def create_board_test_f(self):
+        self.red_left = 1
+        self.white_left = 2
+        self.board = [[0, Piece(0, 1, WHITE), 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [King(5, 0, RED), 0, 0, 0, 0, 0, 0, 0],
+                      [0, Piece(6, 1, WHITE), 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      ]
+    def create_board_test_g_f(self):
+        self.red_left = 1
+        self.white_left = 1
+        self.board = [[0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, Piece(4, 1, WHITE), 0, 0, 0, 0, 0, 0],
+                      [Piece(5, 0, RED), 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0, 0],
+                      ]
