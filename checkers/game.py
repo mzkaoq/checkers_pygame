@@ -1,6 +1,6 @@
 import pygame
 from .Exceptions import BadMoveExceptions, OutsideBoardExceptions
-from .constants import RED, WHITE, SQUARE_SIZE, BLUE, FONT2,FONT,GREY,BLACK
+from .constants import RED, WHITE, SQUARE_SIZE, BLUE, FONT2, FONT, GREY, BLACK
 from checkers.board import Board
 
 
@@ -35,15 +35,19 @@ class Game:
         if self.winner() != None:
             if self.winner() == WHITE:
                 pygame.draw.rect(self.win, GREY,
-                                 (1 * SQUARE_SIZE + SQUARE_SIZE // 2, 4 * SQUARE_SIZE, 5 * SQUARE_SIZE, SQUARE_SIZE + 5))
-                self.show_text("WHITE HAS WON", 4, 1.5,WHITE)
+                                 (
+                                     1 * SQUARE_SIZE + SQUARE_SIZE // 2, 4 * SQUARE_SIZE, 5 * SQUARE_SIZE,
+                                     SQUARE_SIZE + 5))
+                self.show_text("WHITE HAS WON", 4, 1.5, WHITE)
             else:
                 pygame.draw.rect(self.win, GREY,
-                                 (1 * SQUARE_SIZE + SQUARE_SIZE//2, 4* SQUARE_SIZE, 5 * SQUARE_SIZE , SQUARE_SIZE +5))
-                self.show_text("RED HAS WON", 4, 2,WHITE)
+                                 (
+                                     1 * SQUARE_SIZE + SQUARE_SIZE // 2, 4 * SQUARE_SIZE, 5 * SQUARE_SIZE,
+                                     SQUARE_SIZE + 5))
+                self.show_text("RED HAS WON", 4, 2, WHITE)
         pygame.display.update()
 
-    def show_text(self, content, x, y,rgb):
+    def show_text(self, content, x, y, rgb):
         '''
         printowanie tekstu o zadanym kolorze rgb na ekranie w konkretnym miejscu
         '''
@@ -83,6 +87,7 @@ class Game:
 
         '''
         if row != 8:
+            # jeśli mamy już coś zaznaczonego (bierkę) próbujemy zrobić ruch
             if self.selected:
                 try:
                     result = self._move(row, col)
@@ -92,7 +97,11 @@ class Game:
                 except BadMoveExceptions:
                     self.bad_move_exce = True
                     print("bad move")
+            # pobieramy wartość z pod konkretnego indeksu na tablicy
             piece = self.board.get_piece(row, col)
+            # jeżeli obiekt != znaczy ze jest to jakaś bierka, sprawdzamy czy to nasza tura
+            # i czy mamy jakieś ruchy dla tej konkretnej instacji (bierki)
+            # jeśli tak zracamy true, jesli nie false
             if piece != 0 and piece.color == self.turn:
                 self.selected = piece
                 self.valid_moves = self.board.get_valid_moves(piece)
@@ -100,8 +109,10 @@ class Game:
             elif piece != 0 and piece.color != self.turn:
                 print("zly kolor")
             return False
+        # jeżeli klikniecie jest w 8 rząd czyli poniżej planszy (0-7 rzędy) sprawdzamy czy kliknęliśmy w guzik
         elif col == 0 or col == 1:
             self.restart_game()
+        # jeśli kliknęlismy poza plansze ale nie w guzik wyrzucamy błąd
         else:
             raise OutsideBoardExceptions()
 
@@ -132,7 +143,8 @@ class Game:
 
     def _move(self, row, col):
         '''
-        metoda sprawdzająca czy
+        metoda sprawdzająca czy czy pod podanymi współrzędnymi znajduje się się 0 czyli brak jakiegoś obiektu i
+        czy można tam przestawić naszą bierkę
         '''
         piece = self.board.get_piece(row, col)
         if self.selected and piece == 0 and (row, col) in self.valid_moves:

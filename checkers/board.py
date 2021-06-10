@@ -16,7 +16,8 @@ class Board:
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.win = win
-        self.create_board_test_g_f()
+        self.create_board2()
+        # self.create_board_test_g_f()
 
     def draw_squares(self, win):
         '''
@@ -91,8 +92,11 @@ class Board:
     def get_valid_moves(self, piece):
         '''
         metoda inicjalizująca przeszukiwanie dozwolonych ruchów dla przekazanej do niej bierki, tylko w górę lub tylko w dól
-        w zalezności od koloru, dla króla w obie strony, określamy zasięg przeszukiwania w odległości od danej bierki,
+        w zalezności od koloru, dla króla w obie strony, określamy zasięg przeszukiwania w odległości od danej bierki
+        (dla jakich rzędów i kolumn szukać),
         jak i kolor bierki dla której szukamy ruchów
+
+        zwracamy słownik z listą współrzędnych oraz odpowiadającym im zbitym bierkom o ile występują
         '''
         moves = {}
         left = piece.col - 1
@@ -108,12 +112,26 @@ class Board:
         return moves
 
     def _traverse_left(self, start, stop, step, color, left, skipped=[]):
+        '''
+        przeszukiwanie na lewo od bierki
+        :param step definiuje czy w górę czy w dół patrząc po rzędach
+        :param start,stop definiuje jaki przedział rzędów przeszukujemy
+        :skipped pusta lista którą będziemy wypełniać
+        :left kolumna na lewo od tej od której to wywołujemy
+
+        zwracamy słownik gdzie pierszym argumentem jest spółrzędne na które mozemy się ruszyć
+        a drugim jest lista elementów które możemy zbić ew. jest pusta tzn nic nie bijemy
+        przy wielokrotnych biciach idziemy od "konca" tzn ważne ruchy również są dodawne do listy w słowniku
+        '''
         moves = {}
         last = []
         for r in range(start, stop, step):
+            # jeśli wyjście poza planszę break
             if left < 0:
                 break
 
+            # obecna pozycja na planszy dla której sprawdzamy ruchy jeśli jest równy 0 = puste pole
+            # spradzamy czy mogliśmy coś zbić
             current = self.board[r][left]
             if current == 0:
                 if skipped and not last:
@@ -137,10 +155,12 @@ class Board:
                 last = [current]
 
             left -= 1
-
         return moves
 
     def _traverse_right(self, start, stop, step, color, right, skipped=[]):
+        '''
+        analogicznie jak _traverse_left powyżej
+        '''
         moves = {}
         last = []
         for r in range(start, stop, step):
@@ -207,16 +227,18 @@ class Board:
         self.red_left = 1
         self.white_left = 3
         self.board = [[0 for x in range(COLS)] for y in range(ROWS)]
-        self.board[2][3]=Piece(2, 3, WHITE)
-        self.board[4][5]=Piece(4, 5, WHITE)
-        self.board[5][6]=Piece(5, 6, RED)
-        self.board[6][1]=Piece(6, 1, WHITE)
+        self.board[2][3] = Piece(2, 3, WHITE)
+        self.board[4][5] = Piece(4, 5, WHITE)
+        self.board[5][6] = Piece(5, 6, RED)
+        self.board[6][1] = Piece(6, 1, WHITE)
+
     def create_board_test_e(self):
         self.red_left = 1
         self.white_left = 1
         self.board = [[0 for x in range(COLS)] for y in range(ROWS)]
         self.board[1][2] = Piece(1, 2, RED)
         self.board[6][1] = Piece(6, 1, WHITE)
+
     def create_board_test_f(self):
         self.red_left = 1
         self.white_left = 2
